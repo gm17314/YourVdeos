@@ -1,23 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import Header from "./component/Header";
+import Main from "./component/Main";
+
+
+
 
 function App() {
+  const [open, setOpen] = useState(false);
+
+  // console.log("hello",currentUser,userData)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className=" bg-white text-black dark:bg-black dark:text-white w-full h-[100vh]">
+      <Header open = {open} setOpen = {setOpen} />
+      <Main open = {open} setOpen = {setOpen}/>
     </div>
   );
 }
