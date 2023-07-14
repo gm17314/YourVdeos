@@ -46,7 +46,7 @@ const SubscribeButton = ({
           subscriber: channelSubscriber,
         };
 
-        console.log(arr);
+        // console.log(arr);
 
         const index = arr.findIndex((item) => item.id === obj.id);
 
@@ -58,7 +58,7 @@ const SubscribeButton = ({
         await updateDoc(docRef, {
           subscribedChannel: arr,
         });
-        console.log(arr);
+        // console.log(arr);
       }
     }
   };

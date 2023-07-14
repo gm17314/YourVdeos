@@ -197,7 +197,7 @@ const Playpage = () => {
 
           <div className="flex flex-row md:gap-0 gap-3 md:justify-normal justify-between items-center w-full">
 
-            <div className="flex items-center md:gap-4 gap-2 md:w-[37%]">
+            <div className="flex items-center md:gap-4 gap-2 md:w-[37%] w-[67%]">
               <div className="xl:w-[17%] md:w-[19%] w-[17%] ">
                 <img
                   src={
@@ -242,7 +242,7 @@ const Playpage = () => {
             >
               {userLikedVdos &&
                 (userLikedVdos?.includes(videoID) ? (
-                  <span className="px-1">Liked</span>
+                  <span className="text-zinc-800 dark:text-white font-medium xl:text-[15px] lg:text-[13px] md:text-[12px] text-[15px] px-2 py-0">Liked</span>
                 ) : (
                   <div className="md:gap-1 gap-2 flex justify-between items-center  dark:bg-[#272727]  bg-zinc-200/95 rounded-full dark:text-white text-black  xl:text-[17px] lg:text-[15.5px] md:text-[15px] text-[20px] font-medium cursor-pointer">
                     <FiThumbsUp />
