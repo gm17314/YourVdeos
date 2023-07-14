@@ -84,7 +84,7 @@ const Channel = () => {
         </div>
       </div>
 
-      <div className="p-1 pl-4  flex items-center md:justify-normal justify-center lg:gap-6 md:gap-3 gap-7">
+      <div className="p-1 pl-4  flex items-center md:justify-normal justify-center lg:gap-6 md:gap-3 gap-4">
         <button onClick={() => setCategory("videos")} className={`border-0 text-[20px] ${category === "videos" ? "border-b-2 border-black":""} border-white`}>Videos</button>
         <button onClick={() => setCategory("playlists")} className={`border-0 text-[20px] ${category === "playlists" ? "border-b-2 border-black":""} border-white`}>Playlist</button>
         <button onClick={() => setCategory("liveStreams")} className={`border-0 text-[20px] ${category === "liveStreams" ? "border-b-2 border-black":""} border-white`}>Live Streams</button>
