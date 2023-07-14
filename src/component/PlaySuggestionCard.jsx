@@ -16,10 +16,11 @@ const PlaySuggestionCard = ({
 
   return (
     <div className="w-[90%] h-[22.5rem] rounded-md flex flex-col xl:items-center gap-4">
-      <div className="w-full" onMouseOver={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+      <div className="w-full relative" onMouseOver={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+      <Link to={`/Play/${link}`} className='absolute w-full h-full bottom-0 z-1' />
         {
           isHover ?
-            <iframe className="w-full h-48 xl:h-56 rounded-lg" src={`https://www.youtube.com/embed/${link}?autoplay=1&mute=1&modestbranding=0&controls=0`} title={channel_name} allow="autoplay" ></iframe>
+            <iframe className="w-full h-48 xl:h-56 rounded-lg z-0" src={`https://www.youtube.com/embed/${link}?autoplay=1&mute=1&modestbranding=0&controls=0`} title={channel_name} allow="autoplay" ></iframe>
           : <Link to={`/Play/${link}`}>
               <img
                 src={thumb[thumb.length - 1].url}
@@ -44,12 +45,12 @@ const PlaySuggestionCard = ({
           <div className="flex flex-col">
             <Link
               to={`/Channel/${channelId}`}
-              className="text-zinc-500 text-1xl"
+              className="dark:text-zinc-300 text-zinc-500 text-1xl"
             >
               {channel_name}
             </Link>
-            <div className="text-zinc-500 text-1xl">
-              <span>{views} views</span> &nbsp; <span>{time}</span>
+            <div className="dark:text-zinc-300 text-zinc-500 text-1xl">
+              <span>{parseInt(views).toLocaleString()} views</span> &nbsp; &#9679;  <span>{time}</span>
             </div>
           </div>
         </div>

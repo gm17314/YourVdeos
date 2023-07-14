@@ -24,7 +24,7 @@ const Playpage = () => {
   const [relatedVdos, setRelatedVdos] = useState([]);
   const { currentUser } = useContext(AuthContext);
   const [userLikedVdos, setUserLikedVdos] = useState([]);
-  const resObj = { '144p':0, '360p':1, '720p':2 };
+  const resObj = { '144p': 0, '360p': 1, '720p': 2 };
 
   // const { userData } = useContext(UserDataContext)
 
@@ -97,14 +97,14 @@ const Playpage = () => {
   const handleLike = async (id) => {
     if (!currentUser) {
       toast.error("You're not logged in !!!", {
-        position:"top-center",
-        autoClose:4000,
-        hideProgressBar:false,
-        closeOnClick:true,
-        pauseOnHover:true,
-        draggable:true,
-        progress:undefined,
-        theme:"colored",
+        position: "top-center",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
       });
     } else {
       const docRef = doc(db, "users", currentUser.uid);
@@ -119,7 +119,7 @@ const Playpage = () => {
           arr.push(id);
         }
         await updateDoc(docRef, {
-          likedVdos:arr,
+          likedVdos: arr,
         });
         setUserLikedVdos(arr);
       }
@@ -141,7 +141,7 @@ const Playpage = () => {
             arr.push(id);
           }
           await updateDoc(docRef, {
-            history:arr,
+            history: arr,
           });
         }
       }
@@ -177,7 +177,7 @@ const Playpage = () => {
               </div>
             </SkeletonTheme>
           </>
-        ):(
+        ) : (
           <div className=" 2xl:h-[74vh] xl:h-[70vh] lg:h-[22rem] md:h-96  h-[14.5rem]">
             <iframe
               width={"100%"}
@@ -192,88 +192,88 @@ const Playpage = () => {
         <p className="xl:text-[20px] text-[18px] dot font-semibold">
           {videoData?.title}
         </p>
-        <div className="flex gap-4 lg:gap-0 flex-col lg:flex-row lg:items-center lg:justify-between ">
-          
-          <div className="flex md:flex-row flex-col md:gap-0 gap-3 justify-between md:items-center items-start w-full lg:w-[40%]   -red-200">
 
-            {/* <div className="flex items-center w-[100%]  md:w-[70%] xl:w-[60%]   -red-200"> */}
-              <div className="flex items-center md:gap-4 gap-2 ">
-                <div className="xl:w-[17%] md:w-[19%] w-[17%] ">
-                  <img
-                    src={
-                      videoData?.channelThumbnail[
-                        videoData?.channelThumbnail.length - 1
-                      ].url
-                    }
-                    alt=""
-                    className="rounded-full "
-                  />
-                </div>
-                <div>
-                  <Link
-                    to={`/Channel/${videoData?.channelId}`}
-                    className="text-black dark:text-white xl:text-[16px] lg:text-[14px] md:text-[15px] text-[16px] font-medium"
-                  >
-                    {videoData?.channelTitle}
-                  </Link>
-                  <br />
-                  <span className="text-black dark:text-white xl:text-[16px] lg:text-[14px] md:text-[15px] text-[15px] font-medium">
-                    {videoData?.subscriberCountText}
-                  </span>
-                {/* </div> */}
+        <div className="flex gap-4 lg:gap-2 flex-col ">
+
+          <div className="flex flex-row md:gap-0 gap-3 md:justify-normal justify-between items-center w-full">
+
+            <div className="flex items-center md:gap-4 gap-2 md:w-[37%]">
+              <div className="xl:w-[17%] md:w-[19%] w-[17%] ">
+                <img
+                  src={
+                    videoData?.channelThumbnail[
+                      videoData?.channelThumbnail.length - 1
+                    ].url
+                  }
+                  alt=""
+                  className="rounded-full "
+                />
               </div>
-              <SubscribeButton
-                channelId={videoData?.channelId}
-                channelName={videoData?.channelTitle}
-                channelLogo={
-                  videoData?.channelThumbnail[
-                    videoData?.channelThumbnail.length - 1
-                  ].url
-                }
-                channelSubscriber={videoData?.subscriberCountText}
-              />
+              <div>
+                <Link
+                  to={`/Channel/${videoData?.channelId}`}
+                  className="text-black dark:text-white xl:text-[16px] lg:text-[14px] md:text-[15px] text-[16px] font-medium"
+                >
+                  {videoData?.channelTitle}
+                </Link>
+                <br />
+                <span className="text-black dark:text-white xl:text-[16px] lg:text-[14px] md:text-[15px] text-[15px] font-medium">
+                  {videoData?.subscriberCountText}
+                </span>
+              </div>
             </div>
+            <SubscribeButton
+              channelId={videoData?.channelId}
+              channelName={videoData?.channelTitle}
+              channelLogo={
+                videoData?.channelThumbnail[
+                  videoData?.channelThumbnail.length - 1
+                ].url
+              }
+              channelSubscriber={videoData?.subscriberCountText}
+            />
           </div>
 
-          <div className=" -black flex w-full lg:w-[60%] justify-between">
+          <div className=" flex w-full justify-between">
 
             <div
               onClick={() => handleLike(videoID)}
-              className=" md:gap-1 gap-2 flex justify-between items-center  dark:bg-gray-100 bg-zinc-200/95 rounded-full text-black  xl:text-[17px] lg:text-[15.5px] md:text-[15px] text-[20px] font-medium py-[3px] md:px-2 px-3 cursor-pointer"
+              className=" md:gap-1 gap-2 flex justify-between items-center  dark:bg-[#272727]  bg-zinc-200/95 rounded-full text-black  xl:text-[17px] lg:text-[15.5px] md:text-[15px] text-[20px] font-medium py-[3px] md:px-2 px-3 cursor-pointer"
             >
               {userLikedVdos &&
                 (userLikedVdos?.includes(videoID) ? (
                   <span className="px-1">Liked</span>
-                  ):(
-                    <div className="md:gap-1 gap-2 flex justify-between items-center  dark:bg-gray-100 bg-zinc-200/95 rounded-full text-black  xl:text-[17px] lg:text-[15.5px] md:text-[15px] text-[20px] font-medium cursor-pointer">
+                ) : (
+                  <div className="md:gap-1 gap-2 flex justify-between items-center  dark:bg-[#272727]  bg-zinc-200/95 rounded-full dark:text-white text-black  xl:text-[17px] lg:text-[15.5px] md:text-[15px] text-[20px] font-medium cursor-pointer">
                     <FiThumbsUp />
-                    <span className="text-zinc-800 dark:text:black  font-medium xl:text-[15px] lg:text-[13px] md:text-[12px] text-[14.6px]">
+                    <span className="text-zinc-800 dark:text-white font-medium xl:text-[15px] lg:text-[13px] md:text-[12px] text-[14.6px]">
                       {parseInt(videoData?.likeCount).toLocaleString()}
                     </span>
                   </div>
                 ))}
             </div>
+
             <ShareModal />
-            <select onChange={(e) => handleDownload(e)} className=" bg-stone-200 hover:bg-zinc-300 text-zinc-800 xl:text-[20px] lg:text-[19px] md:text-[18px] text-[20px] md:py-1 md:px-2 py-[3px] px-2 rounded text-lg outline-none -0 cursor-pointer">
+            <select onChange={(e) => handleDownload(e)} className=" bg-stone-200 hover:bg-zinc-300 dark:bg-[#272727] dark:text-white text-zinc-800 xl:text-[20px] lg:text-[19px] md:text-[18px] text-[20px] md:py-1 md:px-2 py-[3px] px-2 rounded text-lg outline-none -0 cursor-pointer">
               Sort By
               <option
                 href="/"
-                className="block px-4 py-2 text-gray-800 w-full "
+                className="block px-4 py-2 dark:text-white text-gray-800 w-full "
                 value=''>Download
               </option>
               <option
                 href="/"
-                className="block px-4 py-2 text-gray-800 w-full "
+                className="block px-4 py-2 dark:text-white text-gray-800 w-full "
                 value='144p'>144p
               </option>
               <option
                 href="/"
-                className="block px-4 py-2 text-gray-800 w-full "
+                className="block px-4 py-2 dark:text-white text-gray-800 w-full "
                 value='360p'>360p
               </option>
               <option
                 href="/"
-                className="block px-4 py-2 text-gray-800 w-full "
+                className="block px-4 py-2 dark:text-white text-gray-800 w-full "
                 value='720p'>720p
               </option>
             </select>
@@ -285,26 +285,27 @@ const Playpage = () => {
 
         <div className="flex flex-col gap-2">
           <div
-            className={`${show ? "":"description"
-              } text-[1rem] h-55%  p-[10px] pb-[2px]  bg-gray-600/5 text-black dark:text-white dark:bg-zinc-700 text-medium rounded-lg`}
+            className={`${show ? "" : "description"
+              } text-[1rem] h-55%  p-[10px] pb-[2px]  bg-gray-600/5 text-black dark:text-white dark:bg-[#272727] text-medium rounded-lg`}
           >
             <pre>{createLinks(videoData?.description)}</pre>
           </div>
           <div className="p-1">
             <button className="text-blue-500" onClick={() => setShow(!show)}>
-              {show ? "show less":"show more"}
+              {show ? "show less" : "show more"}
             </button>
           </div>
+          
           <div className="pt-10">
             <div className="flex justify-between lg:w-[40%] md:w-[50%] w-[70%]">
               <span>Comments</span>
               <button className="text-blue-500" onClick={handleComment}>
-                {comm ? "Hide comments":"Load comments"}
+                {comm ? "Hide comments" : "Load comments"}
               </button>
             </div>
             <div
-              className={`${comm ? "":"hidden"
-                } flex flex-col gap-8 text-[1rem] h-50%  pt-2  bg-gray-100/100 text-black text-medium rounded-lg dark:text-white dark:bg-zinc-700 p-2`}
+              className={`${comm ? "" : "hidden"
+                } flex flex-col gap-8 text-[1rem] h-50%  pt-2  bg-gray-100/100 text-black text-medium rounded-lg dark:text-white dark:bg-[#272727]  p-2`}
             >
               {comment.map((com, key) => {
                 if (com?.authorThumbnail)
@@ -338,7 +339,7 @@ const Playpage = () => {
                           {com?.textDisplay}
                         </p>
                         <div className="flex gap-2">
-                          <FiThumbsUp className=" text-black xl:text-[21px] lg:text-[20px] md:text-[15px] text-[15px] font-medium " />
+                          <FiThumbsUp className="dark:text-white text-black xl:text-[21px] lg:text-[20px] md:text-[15px] text-[18px] font-medium " />
                           {com?.likesCount}
                         </div>
                       </div>

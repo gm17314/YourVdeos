@@ -36,7 +36,7 @@ const Trending = () => {
 
       {
         loading ? array.map((elm,index) => (
-          <div key={index}>
+          <div key={index} className="items-center w-full h-96 flex flex-col">
           <div className='loader fixed w-full h-[2px] left-0 top-0 bg-red-600 z-[9999]' />
           <SkeletonTheme  highlightColor="#aaa" baseColor='#9b9b9b'>
             <div className=" xl:w-[23rem] lg-[21rem] md:w-[17rem] sm:w-[19rem] w-[90%] h-96 rounded-md flex flex-col gap-4">

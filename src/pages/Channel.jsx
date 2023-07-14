@@ -66,36 +66,36 @@ const Channel = () => {
           </h2>
 
           <div className=" text-[14px] ">
-            <span href="/" className="text-zinc-600 font-medium text-[16px]">
+            <span href="/" className="dark:text-zinc-200 text-zinc-600 font-medium text-[16px]">
               {channelData?.channelHandle}
             </span>{" "}
             &nbsp;{" "}
-            <span className="text-zinc-600 font-medium text-[15px]">
+            <span className="dark:text-zinc-200 text-zinc-600 font-medium text-[15px]">
               {channelData?.subscriberCountText} subscriber
             </span>{" "}
             &nbsp;{" "}
-            <span className="text-zinc-600 font-medium text-[15px]">
+            <span className="dark:text-zinc-200 text-zinc-600 font-medium text-[15px]">
               {channelData?.videosCount} videos
             </span>
           </div>
-          <p className="text-[1rem] dot h-50% text-zinc-400">
+          <p className="text-[1rem] md:text-start text-center  dot h-50% text-zinc-500/85 dark:text-zinc-200/90">
             {channelData?.description}
           </p>
         </div>
       </div>
 
-      <div className="p-1 pl-4  flex items-center lg:gap-6 md:gap-3">
-        <button onClick={() => setCategory("videos")} className={`border-0 text-[20px] ${category === "videos" ? "border-b-2 border-black":""}`}>Videos</button>
-        <button onClick={() => setCategory("playlists")} className={`border-0 text-[20px] ${category === "playlists" ? "border-b-2 border-black":""}`}>Playlist</button>
-        <button onClick={() => setCategory("liveStreams")} className={`border-0 text-[20px] ${category === "liveStreams" ? "border-b-2 border-black":""}`}>Live Streams</button>
-        <button onClick={() => setCategory("shorts")} className={`border-0 text-[20px] ${category === "shorts" ? "border-b-2 border-black":""}`}>Shorts</button>
+      <div className="p-1 pl-4  flex items-center md:justify-normal justify-center lg:gap-6 md:gap-3 gap-7">
+        <button onClick={() => setCategory("videos")} className={`border-0 text-[20px] ${category === "videos" ? "border-b-2 border-black":""} border-white`}>Videos</button>
+        <button onClick={() => setCategory("playlists")} className={`border-0 text-[20px] ${category === "playlists" ? "border-b-2 border-black":""} border-white`}>Playlist</button>
+        <button onClick={() => setCategory("liveStreams")} className={`border-0 text-[20px] ${category === "liveStreams" ? "border-b-2 border-black":""} border-white`}>Live Streams</button>
+        <button onClick={() => setCategory("shorts")} className={`border-0 text-[20px] ${category === "shorts" ? "border-b-2 border-black":""} border-white`}>Shorts</button>
       </div>
 
       {/* {console.log(videoData)} */}
       <div className="w-full grid justify-items-center 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 ">
         {loading
           ? array.map((elm, index) => (
-            <div key={index}>
+            <div key={index} className="items-center w-full h-96 flex flex-col">
               <div className="loader fixed w-full h-0.5 left-0 top-0 bg-red-600 z-[9999]" />
               <SkeletonTheme highlightColor="#aaa" baseColor="#9b9b9b">
                 <div className=" xl:w-[23rem] lg-[21rem] md:w-[17rem] sm:w-[19rem] w-[90%] h-96 rounded-md flex flex-col gap-4">

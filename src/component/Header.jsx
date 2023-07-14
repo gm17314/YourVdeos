@@ -99,14 +99,14 @@ const Header = ({ setOpen, open }) => {
   return (
     <nav className="flex justify-between items-center  md:px-4 px-1 h-[10vh]">
       <div
-        className="text-4xl w-[6%] cursor-pointer sm:hidden inline-block transition-all duration-1000"
+        className="mr-1 sm:m-0 text-3xl w-[6%] cursor-pointer sm:hidden inline-block transition-all duration-1000"
         onClick={() => setOpen(!open)}
       >
         {open ? <RxCross1 />: <AiOutlineMenu />}
       </div>
 
-      <div className=" logo flex justify-center items-center xl:w-[15%] lg:w-[17%] md:w-[25%] w-[15%]">
-        <img src={logo} alt="" className="md:w-13 w-14 h-full sm:m-0 ml-6" />
+      <div className=" logo flex md:justify-center items-center xl:w-[15%] lg:w-[17%] md:w-[25%] w-[15%]">
+        <img src={logo} alt="" className="md:w-13 w-12 h-full sm:m-0 " />
         <h2 className="md:text-[28px] text-[30px] font-semibold md:inline-block hidden">
           YourVdeos
         </h2>
@@ -115,7 +115,7 @@ const Header = ({ setOpen, open }) => {
       <form
         onSubmit={handleSearch}
         id="searchbar"
-        className={` dark:bg-black xl:w-[45%] md:w-[50%] sm:w-[50%] w-[70%] xl:h-11 h-10 sm:m-0 ml-4 rounded-full flex md:justify-between justify-center items-center relative ${!search ? "overflow-hidden": ""} `}
+        className={` dark:bg-black xl:w-[45%] md:w-[50%] sm:w-[50%] w-[70%] xl:h-11 h-9 sm:m-0  rounded-full flex md:justify-between justify-center items-center relative ${!search ? "overflow-hidden": ""} `}
       >
 
         <input
@@ -127,7 +127,7 @@ const Header = ({ setOpen, open }) => {
           onBlur={() => {
             if (!isHover) setIsFocus(false);
           }}
-          className={` sm:transition-none ${search ? "": "transition-all duration-1000"}  font-medium outline-none border-0 text-black dark:bg-zinc-800 dark:text-white sm:w-[85%] w-[75%] h-full sm:rounded-l-full md:rounded-r-none rounded-full p-2 pl-4 text-[1.3rem] z-0 sm:static absolute  ${search ? "left-[0%]": "left-[-100%]"}`}
+          className={` sm:transition-none ${search ? "": "transition-all duration-1000"}  font-medium outline-none border-0 text-black dark:bg-zinc-800 dark:text-white sm:w-[85%] w-[78%] h-full sm:rounded-l-full md:rounded-r-none rounded-full p-2 pl-4 text-[1.3rem] z-0 sm:static absolute  ${search ? "left-[0%]": "left-[-100%]"}`}
           
         />
         <SuggestionBox
@@ -137,11 +137,12 @@ const Header = ({ setOpen, open }) => {
           set_focus={setIsFocus}
           set_hover={setIsHover}
         />
-        <button className="text-2xl cursor-pointer sm:w-[10%] w-[15%] h-full text-black bg-zinc-200 dark:bg-zinc-600 dark:text-white md:rounded-l-none sm:rounded-r-full rounded-full flex justify-center items-center absolute sm:static right-7">
+        
+        <button className="md:text-2xl text-xl cursor-pointer sm:w-[10%] w-[12%] h-full text-black bg-zinc-200 dark:bg-zinc-600 dark:text-white md:rounded-l-none sm:rounded-r-full rounded-full flex justify-center items-center absolute sm:static right-7">
           <BsSearch />
         </button>
 
-        <button className="text-2xl cursor-pointer md:pl-4 p-2 w-[7%] absolute sm:static right-3">
+        <button className="md:text-2xl text-xl cursor-pointer md:pl-4 p-3 w-[7%] absolute sm:static right-3">
           {
             listening ? < RxCross1 onClick={SpeechRecognition.stopListening} />: <BsMicFill onClick={SpeechRecognition.startListening} />}
 
@@ -172,7 +173,7 @@ const Header = ({ setOpen, open }) => {
               e.target.src =
                 "https://firebasestorage.googleapis.com/v0/b/infinity-blogs.appspot.com/o/blogsImages%2Fldfklkfd1687695154408?alt=media&token=f6fecf9e-b5d4-41a4-b986-401bba45b519";
             }}
-            className="rounded-full md:m-0 ml-2 md:h-10 h-8 md:w-10 w-8"
+            className="rounded-full md:m-0 m-2 mt-0 md:h-10 h-9 md:w-10 w-9"
           />
         </div>
       </div>
