@@ -31,8 +31,8 @@ const Channel = () => {
   // console.log(channelData)
 
   return (
-    <div className="flex flex-col gap-12 xl:gap-10">
-      <div className="w-[99%] 2xl:h-72 xl:h-64 h-60">
+    <div className="flex flex-col gap-6 xl:gap-10">
+      <div className="w-[99%] 2xl:h-72 xl:h-64 md:h-60">
         <img
           src={channelData?.banner[channelData?.banner.length - 1].url}
           alt=""
@@ -41,7 +41,7 @@ const Channel = () => {
       </div>
 
       <div className="flex items-center w-full md:h-56  gap-4  md:flex-row flex-col">
-        <div className="md:h-full flex pt-2 justify-center items-center md:w-[13%] w-[30%] ">
+        <div className="md:h-full flex pt-2 justify-center items-center md:w-[13%] w-[20%] ">
           <img
             src={channelData?.avatar[channelData?.avatar.length - 1].url}
             alt=""
@@ -49,7 +49,7 @@ const Channel = () => {
           />
         </div>
         <div className="flex flex-col md:items-start items-center  gap-2 md:w-[81%] w-[95%] ">
-          <h2 className="text-2xl flex md:flex-row flex-col items-center md:gap-4 lg:gap-8">
+          <h2 className="md:text-2xl text-lg font-semibold flex md:flex-row flex-col items-center gap-1 md:gap-4 lg:gap-8">
             {channelData?.title}{" "}
             <span>
               <SubscribeButton
@@ -65,34 +65,34 @@ const Channel = () => {
             </span>
           </h2>
 
-          <div className=" text-[14px] ">
-            <span href="/" className="dark:text-zinc-200 text-zinc-600 font-medium text-[16px]">
+          <div className=" ">
+            <span href="/" className="dark:text-zinc-200 text-zinc-600 font-medium text-sm md:text-[16px]">
               {channelData?.channelHandle}
             </span>{" "}
             &nbsp;{" "}
-            <span className="dark:text-zinc-200 text-zinc-600 font-medium text-[15px]">
+            <span className="dark:text-zinc-200 text-zinc-600 font-medium text-sm md:text-[15px]">
               {channelData?.subscriberCountText} subscriber
             </span>{" "}
             &nbsp;{" "}
-            <span className="dark:text-zinc-200 text-zinc-600 font-medium text-[15px]">
+            <span className="dark:text-zinc-200 text-zinc-600 font-medium text-sm md:text-[15px]">
               {channelData?.videosCount} videos
             </span>
           </div>
-          <p className="text-[1rem] md:text-start text-center  dot h-50% text-zinc-500/85 dark:text-zinc-200/90">
+          <p className="md:text-[16px] text-sm md:text-start text-center  dot h-50% text-zinc-500/85 dark:text-zinc-200/90">
             {channelData?.description}
           </p>
         </div>
       </div>
 
-      <div className="p-1 pl-4  flex items-center md:justify-normal justify-center lg:gap-6 md:gap-3 gap-4">
-        <button onClick={() => setCategory("videos")} className={`border-0 text-[20px] ${category === "videos" ? "border-b-2 border-black":""} border-white`}>Videos</button>
-        <button onClick={() => setCategory("playlists")} className={`border-0 text-[20px] ${category === "playlists" ? "border-b-2 border-black":""} border-white`}>Playlist</button>
-        <button onClick={() => setCategory("liveStreams")} className={`border-0 text-[20px] ${category === "liveStreams" ? "border-b-2 border-black":""} border-white`}>Live Streams</button>
-        <button onClick={() => setCategory("shorts")} className={`border-0 text-[20px] ${category === "shorts" ? "border-b-2 border-black":""} border-white`}>Shorts</button>
+      <div className="px-1  pl-4  flex items-center md:justify-normal justify-center lg:gap-6 md:gap-3 gap-4 border-b border-b-black">
+        <button onClick={() => setCategory("videos")} className={`border-0 text-lg md:text-[20px] ${category === "videos" ? "border-b-2 border-black" : ""} dark:border-white`}>Videos</button>
+        <button onClick={() => setCategory("playlists")} className={`border-0 text-lg md:text-[20px] ${category === "playlists" ? "border-b-2 border-black" : ""} dark:border-white`}>Playlist</button>
+        <button onClick={() => setCategory("liveStreams")} className={`border-0 text-lg md:text-[20px] ${category === "liveStreams" ? "border-b-2 border-black" : ""} dark:border-white`}>Live Streams</button>
+        <button onClick={() => setCategory("shorts")} className={`border-0 text-lg md:text-[20px] ${category === "shorts" ? "border-b-2 border-black" : ""} dark:border-white`}>Shorts</button>
       </div>
 
       {/* {console.log(videoData)} */}
-      <div className="w-full grid justify-items-center 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 ">
+      <div className="w-full grid justify-items-center 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
         {loading
           ? array.map((elm, index) => (
             <div key={index} className="items-center w-full h-96 flex flex-col">
@@ -114,7 +114,7 @@ const Channel = () => {
               </SkeletonTheme>
             </div>
           ))
-        :videoData?.map(
+          : videoData?.map(
             ({
               videoId,
               title,
