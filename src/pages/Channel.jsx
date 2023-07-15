@@ -32,7 +32,7 @@ const Channel = () => {
 
   return (
     <div className="flex flex-col gap-6 xl:gap-10">
-      <div className="w-[99%] 2xl:h-72 xl:h-64 md:h-60">
+      <div className="w-[99%] 2xl:h-72 xl:h-64 md:h-60 h-28">
         <img
           src={channelData?.banner[channelData?.banner.length - 1].url}
           alt=""
@@ -84,11 +84,11 @@ const Channel = () => {
         </div>
       </div>
 
-      <div className="px-1  pl-4  flex items-center md:justify-normal justify-center lg:gap-6 md:gap-3 gap-4 border-b border-b-black">
-        <button onClick={() => setCategory("videos")} className={`border-0 text-lg md:text-[20px] ${category === "videos" ? "border-b-2 border-black" : ""} dark:border-white`}>Videos</button>
-        <button onClick={() => setCategory("playlists")} className={`border-0 text-lg md:text-[20px] ${category === "playlists" ? "border-b-2 border-black" : ""} dark:border-white`}>Playlist</button>
-        <button onClick={() => setCategory("liveStreams")} className={`border-0 text-lg md:text-[20px] ${category === "liveStreams" ? "border-b-2 border-black" : ""} dark:border-white`}>Live Streams</button>
-        <button onClick={() => setCategory("shorts")} className={`border-0 text-lg md:text-[20px] ${category === "shorts" ? "border-b-2 border-black" : ""} dark:border-white`}>Shorts</button>
+      <div className="px-1  pl-4  flex items-center md:justify-normal justify-center lg:gap-6 md:gap-3 gap-5 border-b border-b-black text-zinc-600 dark:text-white">
+        <button onClick={() => setCategory("videos")} className={`border-0 text-[16px] md:text-[20px] ${category === "videos" ? "border-b-2 border-black" : ""} dark:border-white pb-2`}>Videos</button>
+        <button onClick={() => setCategory("playlists")} className={`border-0 text-[16px] md:text-[20px] ${category === "playlists" ? "border-b-2 border-black" : ""} dark:border-white pb-2`}>Playlist</button>
+        <button onClick={() => setCategory("liveStreams")} className={`border-0 text-[16px] md:text-[20px] ${category === "liveStreams" ? "border-b-2 border-black" : ""} dark:border-white pb-2`}>Live Streams</button>
+        <button onClick={() => setCategory("shorts")} className={`border-0 text-[16px] md:text-[20px] ${category === "shorts" ? "border-b-2 border-black" : ""} dark:border-white pb-2`}>Shorts</button>
       </div>
 
       {/* {console.log(videoData)} */}
