@@ -184,7 +184,7 @@ const Playpage = () => {
             </SkeletonTheme>
           </>
         ) : (
-          <div className=" 2xl:h-[74vh] xl:h-[70vh] lg:h-[22rem] md:h-96  h-[14.5rem]">
+          <div className=" 2xl:h-[74vh] xl:h-[73vh] lg:h-[22rem] md:h-96  h-[14.5rem]">
             <iframe
               width={"100%"}
               height={"100%"}
