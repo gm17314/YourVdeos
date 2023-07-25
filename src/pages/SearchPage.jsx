@@ -45,7 +45,7 @@ const SearchPage = () => {
         )) :
           data?.map((data,index) => {
 
-            console.log(data)
+            // console.log(data)
             if (data?.thumbnail && data?.description && data?.viewCount) {
               return <SearchCard key={index} thumb={data?.thumbnail[data?.thumbnail.length - 1].url} link={data?.videoId} description={data?.description} channelId={data?.channelId} channel_name={data?.channelTitle} views={data?.viewCount} time={data?.publishedTimeText} title={data?.title} />
             }
