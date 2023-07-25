@@ -1,40 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { fetchFromAPI } from "../fetchApi";
 import "react-loading-skeleton/dist/skeleton.css";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import Channelcard from "../component/Channelcard";
 import SubscribeButton from "../component/SubscribeButton";
+import { useQuery } from "react-query";
 
 const Channel = () => {
   const { channelID } = useParams();
-  console.log(channelID);
-  const [videoData, setVideoData] = useState();
-  const [channelData, setChannelData] = useState(null);
-  const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState('videos')
   const array = Array(12).fill(0);
 
   const getDataFromApi = async () => {
-    setLoading(true);
     const apiData = await fetchFromAPI(`channel/${category}?id=${channelID}`);
-    setChannelData(apiData.meta);
-    setVideoData(apiData.data);
-    setLoading(false);
+    return apiData
+    // setChannelData.meta(apiData.meta);
+    // setVideoData(apiData.data);
   };
 
-  useEffect(() => {
-    getDataFromApi();
-    // eslint-disable-next-line
-  }, [channelID, category]);
+  const { isLoading, data} = useQuery([channelID,category], getDataFromApi,{ cacheTime: 1800000, staleTime: 1800000 });
 
-  // console.log(channelData)
+  // console.log(data?.meta)
 
   return (
     <div className="flex flex-col gap-6 xl:gap-10">
       <div className="w-[99%] 2xl:h-72 xl:h-64 md:h-60 h-28">
         <img
-          src={channelData?.banner[channelData?.banner.length - 1].url}
+          src={data?.meta?.banner[data?.meta?.banner.length - 1].url}
           alt=""
           className="w-full h-full"
         />
@@ -43,22 +36,22 @@ const Channel = () => {
       <div className="flex items-center w-full md:h-56  gap-4  md:flex-row flex-col">
         <div className="md:h-full flex pt-2 justify-center items-center md:w-[13%] w-[20%] ">
           <img
-            src={channelData?.avatar[channelData?.avatar.length - 1].url}
+            src={data?.meta?.avatar[data?.meta?.avatar.length - 1].url}
             alt=""
             className=" rounded-full"
           />
         </div>
         <div className="flex flex-col md:items-start items-center  gap-2 md:w-[81%] w-[95%] ">
           <h2 className="md:text-2xl text-lg font-semibold flex md:flex-row flex-col items-center gap-1 md:gap-4 lg:gap-8">
-            {channelData?.title}{" "}
+            {data?.meta?.title}{" "}
             <span>
               <SubscribeButton
-                channelId={channelData?.channelId}
-                channelName={channelData?.title}
-                channelSubscriber={channelData?.subscriberCountText + " subscribers"}
+                channelId={data?.meta?.channelId}
+                channelName={data?.meta?.title}
+                channelSubscriber={data?.meta?.subscriberCountText + " subscribers"}
                 channelLogo={
-                  channelData?.avatar[
-                    channelData?.avatar.length - 1
+                  data?.meta?.avatar[
+                    data?.meta?.avatar.length - 1
                   ].url
                 }
               />
@@ -67,19 +60,19 @@ const Channel = () => {
 
           <div className=" ">
             <span href="/" className="dark:text-zinc-200 text-zinc-600 font-medium text-sm md:text-[16px]">
-              {channelData?.channelHandle}
+              {data?.meta?.channelHandle}
             </span>{" "}
             &nbsp;{" "}
             <span className="dark:text-zinc-200 text-zinc-600 font-medium text-sm md:text-[15px]">
-              {channelData?.subscriberCountText} subscriber
+              {data?.meta?.subscriberCountText} subscriber
             </span>{" "}
             &nbsp;{" "}
             <span className="dark:text-zinc-200 text-zinc-600 font-medium text-sm md:text-[15px]">
-              {channelData?.videosCount} videos
+              {data?.meta?.videosCount} videos
             </span>
           </div>
           <p className="md:text-[16px] text-sm md:text-start text-center  dot h-50% text-zinc-500/85 dark:text-zinc-200/90">
-            {channelData?.description}
+            {data?.meta?.description}
           </p>
         </div>
       </div>
@@ -93,7 +86,7 @@ const Channel = () => {
 
       {/* {console.log(videoData)} */}
       <div className="w-full grid justify-items-center 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
-        {loading
+        {isLoading
           ? array.map((elm, index) => (
             <div key={index} className="items-center w-full h-96 flex flex-col">
               <div className="loader fixed w-full h-0.5 left-0 top-0 bg-red-600 z-[9999]" />
@@ -114,7 +107,7 @@ const Channel = () => {
               </SkeletonTheme>
             </div>
           ))
-          : videoData?.map(
+          : data?.data?.map(
             ({
               videoId,
               title,

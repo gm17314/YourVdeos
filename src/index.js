@@ -2,29 +2,30 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
-import reportWebVitals from './reportWebVitals';
+// import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContextProvider } from './AuthContext';
 import { CountryCodeProvider } from './CountryCodeContext';
 import { TrendingVdoProvider } from './trendingVdoContext';
-import SearchDataContextProvider from './SearchDataContext';
-import { UserDataContextProvider } from './UserDataContext';
+import { QueryClient, QueryClientProvider } from 'react-query'
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration"
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
     <AuthContextProvider>
-        <SearchDataContextProvider>
-          <TrendingVdoProvider>
-            <CountryCodeProvider>
-      <UserDataContextProvider>
-              <App />
-      </UserDataContextProvider>
-            </CountryCodeProvider>
-          </TrendingVdoProvider>
-        </SearchDataContextProvider>
+        <TrendingVdoProvider>
+          <CountryCodeProvider>
+              <QueryClientProvider client={queryClient}>
+                <App />
+              </QueryClientProvider>
+          </CountryCodeProvider>
+        </TrendingVdoProvider>
     </AuthContextProvider>
   </BrowserRouter>
 );
 
-reportWebVitals();
+serviceWorkerRegistration.register() ;
+// reportWebVitals();

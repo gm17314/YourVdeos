@@ -11,6 +11,8 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import SubscribeButton from "../component/SubscribeButton";
 import { toast } from "react-toastify";
 import ShareModal from "../component/ShareModal";
+import axios from "axios";
+import { useQuery } from "react-query";
 // import { UserDataContext } from "../UserDataContext";
 
 const Playpage = () => {
@@ -19,9 +21,6 @@ const Playpage = () => {
   const [comm, setComm] = useState(false);
   const { videoID } = useParams();
   const { countryCode } = useContext(CountryCodeContext);
-  const [videoData, setVideoData] = useState();
-  const [loading, setLoading] = useState(false);
-  const [relatedVdos, setRelatedVdos] = useState([]);
   const { currentUser } = useContext(AuthContext);
   const [userLikedVdos, setUserLikedVdos] = useState([]);
   const resObj = { '144p': 0, '360p': 1, '720p': 2 };
@@ -52,15 +51,16 @@ const Playpage = () => {
   };
 
   const getDataFromApi = async () => {
-    setLoading(true);
     const apiData = await fetchFromAPI(
       `related?id=${videoID}&geo=${countryCode}`
     );
-    setVideoData(apiData.meta);
-    setRelatedVdos(apiData.data);
-
-    setLoading(false);
+    return apiData
+    // setdata?.meta(apiData.meta);
+    // setRelatedVdos(apiData.data);
   };
+
+  const { isLoading, data } = useQuery(videoID, getDataFromApi,{ cacheTime: 1800000, staleTime: 1800000 });
+
 
   useEffect(() => {
     const getDataFromApi = async () => {
@@ -73,11 +73,6 @@ const Playpage = () => {
     // console.log(comment);
   }, [comment, videoID]);
 
-  useEffect(() => {
-    getDataFromApi();
-
-    // eslint-disable-next-line
-  }, [videoID]);
 
   const handleComment = async () => {
     setComm(!comm);
@@ -150,25 +145,36 @@ const Playpage = () => {
     // eslint-disable-next-line
   }, [videoID]);
 
-
-
+  // mp3 api, its new api not old
+  const options = {
+    headers: {
+      'X-RapidAPI-Key': '3dea4d93b5msh454174724244e24p1ab52fjsn1bc6fce105c1',
+      'X-RapidAPI-Host': 'youtube-mp36.p.rapidapi.com'
+    }
+  };
 
   const handleDownload = async (e) => {
     const res = e.target.value;
     if (res) {
-      const apiData = await fetchFromAPI(`dl?id=${videoID}`);
-      const { formats } = await apiData;
-      const vdoUrl = formats[resObj[res]].url;
+      if (res === "mp3") {
+        const { data } = await axios.get(`https://youtube-mp36.p.rapidapi.com/dl?id=${videoID}`, options);
+        window.open(data?.link)
+      }
+      else {
+        const apiData = await fetchFromAPI(`dl?id=${videoID}`);
+        const { formats } = await apiData;
+        const vdoUrl = formats[resObj[res]].url;
 
-      window.open(vdoUrl)
+        window.open(vdoUrl)
+      }
     }
   };
 
   return (
-    // const { title, channelThumbnail, channelId, channelTitle, subscriberCountText, likeCount, description, videoId } = videoData;
+    // const { title, channelThumbnail, channelId, channelTitle, subscriberCountText, likeCount, description, videoId } = data?.meta;
     <div className="flex flex-col lg:flex-row md:gap-0 gap-12">
       <div className=" p-2 flex flex-col gap-4 lg:w-[70%] ">
-        {loading ? (
+        {isLoading ? (
           <>
             <div className="loader fixed w-full h-0.5 left-0 top-0 bg-red-600 z-[9999]" />
             <SkeletonTheme highlightColor="#aaa" baseColor="#9b9b9b">
@@ -182,7 +188,7 @@ const Playpage = () => {
             <iframe
               width={"100%"}
               height={"100%"}
-              src={`https://www.youtube.com/embed/${videoData?.videoId}?autoplay=1`}
+              src={`https://www.youtube.com/embed/${data?.meta?.videoId}?autoplay=1`}
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
@@ -190,7 +196,7 @@ const Playpage = () => {
           </div>
         )}
         <p className="xl:text-[20px] text-[18px] dot font-semibold">
-          {videoData?.title}
+          {data?.meta?.title}
         </p>
 
         <div className="flex gap-4 lg:gap-2 flex-col ">
@@ -201,8 +207,8 @@ const Playpage = () => {
               <div className="xl:w-[17%] md:w-[19%] w-[17%] ">
                 <img
                   src={
-                    videoData?.channelThumbnail[
-                      videoData?.channelThumbnail.length - 1
+                    data?.meta?.channelThumbnail[
+                      data?.meta?.channelThumbnail.length - 1
                     ].url
                   }
                   alt=""
@@ -211,26 +217,26 @@ const Playpage = () => {
               </div>
               <div>
                 <Link
-                  to={`/Channel/${videoData?.channelId}`}
+                  to={`/Channel/${data?.meta?.channelId}`}
                   className="text-black dark:text-white xl:text-[16px] lg:text-[14px] md:text-[15px] text-[16px] font-medium"
                 >
-                  {videoData?.channelTitle}
+                  {data?.meta?.channelTitle}
                 </Link>
                 <br />
                 <span className="text-black dark:text-white xl:text-[16px] lg:text-[14px] md:text-[15px] text-[15px] font-medium">
-                  {videoData?.subscriberCountText}
+                  {data?.meta?.subscriberCountText}
                 </span>
               </div>
             </div>
             <SubscribeButton
-              channelId={videoData?.channelId}
-              channelName={videoData?.channelTitle}
+              channelId={data?.meta?.channelId}
+              channelName={data?.meta?.channelTitle}
               channelLogo={
-                videoData?.channelThumbnail[
-                  videoData?.channelThumbnail.length - 1
+                data?.meta?.channelThumbnail[
+                  data?.meta?.channelThumbnail.length - 1
                 ].url
               }
-              channelSubscriber={videoData?.subscriberCountText}
+              channelSubscriber={data?.meta?.subscriberCountText}
             />
           </div>
 
@@ -247,7 +253,7 @@ const Playpage = () => {
                   <div className="md:gap-1 gap-2 flex justify-between items-center  dark:bg-[#272727]  bg-zinc-200/95 rounded-full dark:text-white text-black  xl:text-[17px] lg:text-[15.5px] md:text-[15px] text-[20px] font-medium cursor-pointer">
                     <FiThumbsUp />
                     <span className="text-zinc-800 dark:text-white font-medium xl:text-[15px] lg:text-[13px] md:text-[12px] text-[14.6px]">
-                      {parseInt(videoData?.likeCount).toLocaleString()}
+                      {parseInt(data?.meta?.likeCount).toLocaleString()}
                     </span>
                   </div>
                 ))}
@@ -260,6 +266,11 @@ const Playpage = () => {
                 href="/"
                 className="block px-4 py-2 dark:text-white text-gray-800 w-full "
                 value=''>Download
+              </option>
+              <option
+                href="/"
+                className="block px-4 py-2 dark:text-white text-gray-800 w-full "
+                value='mp3'>Mp3
               </option>
               <option
                 href="/"
@@ -288,14 +299,14 @@ const Playpage = () => {
             className={`${show ? "" : "description"
               } text-[1rem] h-55%  p-[10px] pb-[2px]  bg-gray-600/5 text-black dark:text-white dark:bg-[#272727] text-medium rounded-lg`}
           >
-            <pre>{createLinks(videoData?.description)}</pre>
+            <pre>{createLinks(data?.meta?.description)}</pre>
           </div>
           <div className="p-1">
             <button className="text-blue-500" onClick={() => setShow(!show)}>
               {show ? "show less" : "show more"}
             </button>
           </div>
-          
+
           <div className="pt-10">
             <div className="flex justify-between lg:w-[40%] md:w-[50%] w-[70%]">
               <span>Comments</span>
@@ -351,7 +362,7 @@ const Playpage = () => {
           </div>
         </div>
       </div>
-      <RelatedVideos loading={loading} relatedVdos={relatedVdos} />
+      <RelatedVideos loading={isLoading} relatedVdos={data?.data} />
     </div>
   );
 };

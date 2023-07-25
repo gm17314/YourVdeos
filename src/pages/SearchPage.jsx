@@ -1,53 +1,30 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext} from 'react'
 import SearchCard from '../component/Searchcard'
 import { useParams } from 'react-router-dom';
 import { CountryCodeContext } from '../CountryCodeContext';
-import { SearchDataContext } from '../SearchDataContext';
 import { fetchFromAPI } from '../fetchApi';
 import 'react-loading-skeleton/dist/skeleton.css'
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton';
+import { useQuery } from "react-query"
 
 const SearchPage = () => {
 
   const { searchValue } = useParams();
   const countryCode = useContext(CountryCodeContext);
-  const { searchData, updateSearchData } = useContext(SearchDataContext);
-  const [loading, setLoading] = useState(false);
   const array = Array(12).fill(0);
-  const [videos, setVideos] = useState([]);
 
-  const getDataFromApi = async () => {
-    setLoading(true);
+  const { isLoading, data } = useQuery(searchValue, async() => {
+    const {data} = await fetchFromAPI(`search?query=${searchValue}&geo=${countryCode.countryCode}`);
+    return data
+  }, { cacheTime: 1800000, staleTime: 1800000 });
+  
 
-    // first check that search query is present in our context or not
-    const cachedData = searchData[searchValue];
 
-    // if yes then no need to fetch again
-    if (cachedData) {
-      setVideos(cachedData);
-      setLoading(false);
-    }
 
-    // else fetch new data
-    else {
-      console.log(countryCode)
-      const apiData = await fetchFromAPI(`search?query=${searchValue}&geo=${countryCode.countryCode}`);
-      setVideos(apiData.data);
-      setLoading(false);
-      updateSearchData(searchValue, apiData.data);
-    }
-  };
-
-  useEffect(() => {
-    getDataFromApi();
-
-    // eslint-disable-next-line
-  }, [searchValue, countryCode]);
-  // console.log(videos)
   return (
     <div className='w-full flex flex-col items-center gap-10 pt-8'>
       {
-        loading ? array.map((elm,index) => (
+        isLoading ? array.map((elm, index) => (
           <div key={index} className="w-[90%] lg:h-56 md:h-48 rounded-md flex md:flex-row flex-col lg:gap-8 md:gap-3 gap-4 items-center">
             <>
               <div className='loader fixed w-full h-1 left-0 top-0 bg-red-600 z-[9999]' />
@@ -65,12 +42,12 @@ const SearchPage = () => {
               </SkeletonTheme>
             </>
           </div>
-        )):
-          videos?.map((video) => {
+        )) :
+          data?.map((data,index) => {
 
-            // console.log(video)
-            if (video?.thumbnail && video?.description && video?.viewCount) {
-              return <SearchCard key={video?.videoId} thumb={video?.thumbnail[video?.thumbnail.length - 1].url} link={video?.videoId} description={video?.description} channelId={video?.channelId} channel_name={video?.channelTitle} views={video?.viewCount} time={video?.publishedTimeText} title={video?.title} />
+            // console.log(data)
+            if (data?.thumbnail && data?.description && data?.viewCount) {
+              return <SearchCard key={index} thumb={data?.thumbnail[data?.thumbnail.length - 1].url} link={data?.dataId} description={data?.description} channelId={data?.channelId} channel_name={data?.channelTitle} views={data?.viewCount} time={data?.publishedTimeText} title={data?.title} />
             }
 
             return null;

@@ -8,9 +8,9 @@ import VideoCard from "../component/VideoCard";
 import { fetchFromAPI } from "../fetchApi";
 import SortBy from "../component/SortBy";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useQuery } from "react-query";
 
 const History = () => {
-  const [loading, setLoading] = useState(false);
   const array = Array(12).fill(0);
   const { currentUser } = useContext(AuthContext);
   const [history, setHistory] = useState([]);
@@ -31,32 +31,40 @@ const History = () => {
     fetchId();
   }, [currentUser]);
 
-  useEffect(() => {
-    const getVideos = async () => {
-      if (history.length >= 1) {
-        const videoIds = history.join(",");
-        setLoading(true);
-        const apiData = await fetchFromAPI(`video/info?id=${videoIds}`);
-        setLoading(false);
-        if (history && history.length === 1) {
-          setVideos([apiData]);
-        } else {
-          setVideos(apiData.data);
-        }
-      }
-    };
 
-    getVideos();
-  }, [history]);
+  const getVideos = async () => {
+    if (history && history.length >= 1) {
+      const videoIds = history.join(",");
+      const apiData = await fetchFromAPI(`video/info?id=${videoIds}`);
+      if (history.length === 1) {
+        return [apiData]
+      } else {
+        return apiData.data;
+      }
+
+    }
+  };
+
+  const { isLoading, data, refetch } = useQuery("history", getVideos);
+
+  useEffect(() => {
+    if (history && !data) refetch();
+    // eslint-disable-next-line
+  }, [history])
+
+  useEffect(() => {
+    if (data) setVideos(data);
+  }, [data])
 
   const clearHistory = async (id) => {
     if (currentUser && currentUser.uid) {
       const docRef = doc(db, "users", currentUser.uid);
       await updateDoc(docRef, {
-        history:[],
+        history: [],
       });
-      setVideos([]);
     }
+    setVideos([]);
+    refetch()
   };
 
   const handleSingleDelete = async (id) => {
@@ -68,10 +76,14 @@ const History = () => {
       const index = arr.indexOf(id);
       arr.splice(index, 1);
       await updateDoc(docRef, {
-        history:arr,
+        history: arr,
       });
     }
+    setVideos(videos.filter(ele => ele.id !== id));
   };
+
+
+
   return (
     <div className="flex flex-col gap-2 ">
       <h2 className="flex justify-between items-center text white pr-[2%] md:text-4xl text-3xl  font-semibold xl:pl-5 lg:pl-3 md:pl-8 pl-6">
@@ -87,63 +99,63 @@ const History = () => {
       <SortBy video={videos} set_video={setVideos} />
 
       <div className="w-full pt-8 grid justify-items-center 2xl:grid-cols-4 lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 ">
-        {loading
+        {isLoading
           ? array.map((elm, index) => (
-              <div key={index} className="items-center w-full h-96 flex flex-col">
-                <div className="loader fixed w-full h-0.5 left-0 top-0 bg-red-600 z-[9999]" />
-                <SkeletonTheme highlightColor="#aaa" baseColor="#9b9b9b">
-                  <div className=" xl:w-[23rem] lg-[21rem] md:w-[17rem] sm:w-[19rem] w-[90%] h-96 rounded-md flex flex-col gap-4">
-                    <Skeleton className="h-28" borderRadius="8px" />
-                    <div className="flex w-full h-28 justify-between">
-                      <div className="h-full flex pt-2 justify-start w-[19%]">
-                        <Skeleton circle className="h-12 w-12" />
-                      </div>
-                      <div className="flex flex-col gap-2 w-[81%]">
-                        <Skeleton className="h-8" />
-                        <Skeleton className="h-8" />
-                        <Skeleton className="h-8" />
-                      </div>
+            <div key={index} className="items-center w-full h-96 flex flex-col">
+              <div className="loader fixed w-full h-0.5 left-0 top-0 bg-red-600 z-[9999]" />
+              <SkeletonTheme highlightColor="#aaa" baseColor="#9b9b9b">
+                <div className=" xl:w-[23rem] lg-[21rem] md:w-[17rem] sm:w-[19rem] w-[90%] h-96 rounded-md flex flex-col gap-4">
+                  <Skeleton className="h-28" borderRadius="8px" />
+                  <div className="flex w-full h-28 justify-between">
+                    <div className="h-full flex pt-2 justify-start w-[19%]">
+                      <Skeleton circle className="h-12 w-12" />
+                    </div>
+                    <div className="flex flex-col gap-2 w-[81%]">
+                      <Skeleton className="h-8" />
+                      <Skeleton className="h-8" />
+                      <Skeleton className="h-8" />
                     </div>
                   </div>
-                </SkeletonTheme>
-              </div>
-            ))
-       :videos?.map(
-              ({
-                id,
-                title,
-                channelTitle,
-                publishedDate,
-                viewCount,
-                thumbnail,
-                channelId,
-              }) => {
-                // console.log(thumbnail)
-                if (thumbnail) {
-                  return (
-                    <div key={id} className="relative flex justify-center">
-                      <button
-                        onClick={() => handleSingleDelete(id)}
-                        className="md:text-3xl text-2xl font-medium items-center gap-1 px-2 py-1 text-zinc-800 dark:text-white cursor-pointer absolute right-2 bottom-16 "
-                      >
-                        <RiDeleteBin6Line />
-                      </button>
-                      <VideoCard
-                        thumb={thumbnail}
-                        link={id}
-                        description={title}
-                        channel_name={channelTitle}
-                        channel_logo={null}
-                        views={viewCount}
-                        time={publishedDate}
-                        channelId={channelId}
-                      />
-                    </div>
-                  );
-                }
-                return null;
+                </div>
+              </SkeletonTheme>
+            </div>
+          ))
+          : videos?.map(
+            ({
+              id,
+              title,
+              channelTitle,
+              publishedDate,
+              viewCount,
+              thumbnail,
+              channelId,
+            }) => {
+              // console.log(thumbnail)
+              if (thumbnail) {
+                return (
+                  <div key={id} className="relative flex justify-center">
+                    <button
+                      onClick={() => handleSingleDelete(id)}
+                      className="md:text-3xl text-2xl font-medium items-center gap-1 px-2 py-1 text-zinc-800 dark:text-white cursor-pointer absolute right-2 bottom-16 "
+                    >
+                      <RiDeleteBin6Line />
+                    </button>
+                    <VideoCard
+                      thumb={thumbnail}
+                      link={id}
+                      description={title}
+                      channel_name={channelTitle}
+                      channel_logo={null}
+                      views={viewCount}
+                      time={publishedDate}
+                      channelId={channelId}
+                    />
+                  </div>
+                );
               }
-            )}
+              return null;
+            }
+          )}
       </div>
     </div>
   );
