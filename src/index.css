@@ -11,6 +11,34 @@
   font-family:"Roboto", sans-serif;
 }
 
+
+body.dark {
+  --scrollbar-track-bg-color: #525252;
+  --scrollbar-bg-color: #272727;
+}
+
+body.light {
+  --scrollbar-track-bg-color: #e5e5e5;
+  --scrollbar-bg-color: #b1b1b1;
+}
+
+
+::-webkit-scrollbar {
+  width: 0.7rem;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--scrollbar-track-bg-color);
+  box-shadow: inset 0 0 0.2rem var(--scrollbar-track-bg-color);
+  border-radius: 0.3rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-bg-color);
+  cursor: pointer;
+  border-radius: 0.3rem;
+}
+
 .line {
   overflow:hidden;
   display:-webkit-box;
